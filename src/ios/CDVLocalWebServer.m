@@ -217,19 +217,21 @@
     GCDWebServerAsyncProcessBlock asyncProcessBlock = ^void (GCDWebServerRequest* request, GCDWebServerCompletionBlock complete) {
 
         //check if it is a request from localhost
+		// Removed check to enable file-serving to safari, e.g. to show pdf files.
         NSString *host = [request.headers objectForKey:@"Host"];
         if (host==nil || [host hasPrefix:@"localhost"] == NO ) {
-            complete([GCDWebServerErrorResponse responseWithClientError:kGCDWebServerHTTPStatusCode_Forbidden message:@"FORBIDDEN"]);
-            return;
+            // complete([GCDWebServerErrorResponse responseWithClientError:kGCDWebServerHTTPStatusCode_Forbidden message:@"FORBIDDEN"]);
+            // return;
         }
 
         //check if the querystring or the cookie has the token
-        BOOL hasToken = (request.URL.query && [request.URL.query containsString:authToken]);
+        // Removed check to enable file-serving to safari, e.g. to show pdf files.
+		BOOL hasToken = (request.URL.query && [request.URL.query containsString:authToken]);
         NSString *cookie = [request.headers objectForKey:@"Cookie"];
         BOOL hasCookie = (cookie && [cookie containsString:authToken]);
         if (!hasToken && !hasCookie) {
-            complete([GCDWebServerErrorResponse responseWithClientError:kGCDWebServerHTTPStatusCode_Forbidden message:@"FORBIDDEN"]);
-            return;
+            // complete([GCDWebServerErrorResponse responseWithClientError:kGCDWebServerHTTPStatusCode_Forbidden message:@"FORBIDDEN"]);
+            // return;
         }
 
         processRequestForResponseBlock(request, ^void(GCDWebServerResponse* response){
